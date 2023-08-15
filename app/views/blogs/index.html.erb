@@ -1,0 +1,58 @@
+<body>
+  <header>
+<%= button_to 'ログアウト', destroy_user_session_path, method: :delete %>
+
+<% if user_signed_in? %>
+  <%= link_to "マイページへ", user_path(current_user.id) %>
+<% end %>
+ </header>
+<p id="notice"><%= notice %></p>
+
+<h1>ToDo一覧</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>タイトル</th>
+      <th>時間</th>
+      <th>詳細</th>
+      <th>編集</th>
+      <th>削除</th>
+      <th>         メモ          </th>
+      <th>checkboxes</th>
+      <th colspan="3"></th>
+
+
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @blogs.each do |blog| %>
+      <tr>
+        <td><%= blog.title %></td>
+        <td><%= blog.start_time.strftime("%Y-%m-%d %H:%M") %></td>
+        <td><%= link_to 'Show', blog %></td>
+        <td><%= link_to 'Edit', edit_blog_path(blog.id) %></td>
+        <td><%= link_to 'Destroy',blog_path(blog.id), method: :delete %></td>
+        <td><%= blog.content %></td>
+        <td><%= link_to blog.checkboxes, blog %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<h3><%= link_to 'ToDoを追加', new_blog_path %></h3>
+
+<%= month_calendar events: @blogs do |date, blogs| %>
+  <%= date.day %>
+
+  <% blogs.each do |blog| %>
+    <div>
+      <%= link_to blog.title, blog %>
+      <%= link_to blog.checkboxes, blog %>
+    </div>
+  <% end %>
+<% end %>
+</body>
